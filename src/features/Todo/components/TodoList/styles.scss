@@ -1,0 +1,8 @@
+.todo-item {
+    cursor: pointer;
+    user-select: none;
+    &.completed {
+        color: #ccc;
+        text-decoration: line-through;
+    }
+}
