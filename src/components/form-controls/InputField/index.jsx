@@ -8,23 +8,30 @@ InputField.propTypes = {
     name: PropTypes.string.isRequired,
 
     label: PropTypes.string,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    required: PropTypes.bool
 };
 
+InputField.defaultValues = {
+    width: 'fullWidth'
+}
+
 function InputField(props) {
-    const { form, name, label, disabled } = props;
+    const { form, name, label, disabled, required, as, type } = props;
     const { errors, formState } = form;
     const hasError = formState.touched[name] && errors[name]
-
     return (
         <Controller
             name={name}
             control={form.control}
-            as={TextField}
+            as={as}
 
             fullWidth
             label={label}
             disabled={disabled}
+            required={required}
+            type={type}
+
             error={!!hasError}
             helperText={errors[name]?.message}
         />
