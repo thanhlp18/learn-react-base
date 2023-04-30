@@ -12,10 +12,6 @@ InputField.propTypes = {
     required: PropTypes.bool
 };
 
-InputField.defaultValues = {
-    width: 'fullWidth'
-}
-
 function InputField(props) {
     const { form, name, label, disabled, required, as, type } = props;
     const { errors, formState } = form;

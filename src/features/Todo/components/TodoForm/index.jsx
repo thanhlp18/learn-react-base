@@ -4,6 +4,7 @@ import InputField from 'components/form-controls/InputField';
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { TextField } from '@material-ui/core';
 
 
 
@@ -26,12 +27,15 @@ function TodoForm(props) {
     })
 
     const handleSubmit = (values) => {
-        console.log('TODO FORM: ', values)
+        const { onSubmit } = props;
+        if (onSubmit) {
+            onSubmit(values)
+        }
     }
 
     return (
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-            <InputField required name="title" label="Todo" form={form} />
+            <InputField required name="title" label="Todo" form={form} as={TextField} />
         </form>
     );
 }
