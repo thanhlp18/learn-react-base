@@ -7,11 +7,12 @@ import CounterFeature from 'features/Counter'
 import NotFound from './components/NotFound';
 import productApi from 'api/productApi';
 import RegisterFeature from 'features/Register';
+import Header from 'components/Header';
 function App() {
 
   return <div className="app">
-    <Link to="/todos"><p>Todo</p></Link>
-    <Link to="/albums"><p>Albums</p></Link>
+    <Header />
+
 
     <Switch>
       <Route path="/" component={CounterFeature} exact />
