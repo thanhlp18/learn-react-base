@@ -88,7 +88,7 @@ function ListPage(props) {
         console.log('Form submit: ', values);
         const newTodo = {
             id: todoList.length + 1,
-            title: values.title,
+            title: values.todo,
             status: 'new'
         }
 

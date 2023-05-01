@@ -6,7 +6,6 @@ import AlbumFeature from 'features/Album';
 import CounterFeature from 'features/Counter'
 import NotFound from './components/NotFound';
 import productApi from 'api/productApi';
-import RegisterFeature from 'features/Register';
 import Header from 'components/Header';
 function App() {
 
@@ -18,7 +17,6 @@ function App() {
       <Route path="/" component={CounterFeature} exact />
       <Route path="/todos" component={TodoFeature} />
       <Route path="/albums" component={AlbumFeature} />
-      <Route path="/register" component={RegisterFeature} />
 
       {/* <Route component={NotFound} /> */}
     </Switch>

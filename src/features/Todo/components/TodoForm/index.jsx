@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
 import InputField from 'components/form-controls/InputField';
-import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { TextField } from '@material-ui/core';
 
 
 
@@ -13,21 +12,19 @@ TodoForm.propTypes = {
 };
 
 function TodoForm(props) {
-    // Dinh nghia thang schema
-    const schema = yup.object().shape({
-        title: yup.string().required('Please enter title!'),
-    });
+    const schema = yup.object({
+        todo: yup.string().required('Please enter your todo!'),
+    }).required();
 
-    // Chen thang resolver vao useForm va su dung thang schema
     const form = useForm({
         defaultValues: {
-            title: ''
+            todo: ''
         },
         resolver: yupResolver(schema)
     })
 
     const handleSubmit = (values) => {
-        const { onSubmit } = props;
+        const { onSubmit } = props
         if (onSubmit) {
             onSubmit(values)
         }
@@ -35,7 +32,7 @@ function TodoForm(props) {
 
     return (
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-            <InputField required name="title" label="Todo" form={form} as={TextField} />
+            <InputField name="todo" label="Todo" form={form} />
         </form>
     );
 }
