@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import PetsIcon from '@material-ui/icons/Pets';
+import Box from '@material-ui/core/Box'
 import { Link, NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -14,6 +15,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useState } from 'react';
 import Register from 'features/Auth/components/Register';
+import { Close } from '@material-ui/icons'
+import Login from 'features/Auth/components/Login';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,11 +31,24 @@ const useStyles = makeStyles((theme) => ({
     link: {
         textDecoration: 'none',
         color: 'white',
+    },
+    closeButton: {
+        position: 'absolute',
+        top: theme.spacing(1),
+        right: theme.spacing(1),
+        color: theme.palette.grey[500],
+        zIndex: 999,
     }
 }));
 
+const MODE = {
+    LOGIN: 'login',
+    REGISTER: 'register'
+}
+
 export default function ButtonAppBar() {
     const [open, setOpen] = useState(false);
+    const [mode, setMode] = useState(MODE.LOGIN)
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -60,17 +76,37 @@ export default function ButtonAppBar() {
             </AppBar>
 
             <Dialog disableEscapeKeyDown disableBackdropClick open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+                <IconButton className={classes.closeButton} onClick={handleClose}>
+                    <Close />
+                </IconButton>
+
                 <DialogContent>
-                    <Register />
+
+                    {mode === MODE.REGISTER && (
+                        <>
+                            <Register closeDialog={handleClose} />
+
+                            <Box textAlign='center'>
+                                <Button color='primary' onClick={() => setMode(MODE.LOGIN)}>
+                                    Already have an account. Login here.
+                                </Button>
+                            </Box>
+                        </>
+                    )}
+                    {mode === MODE.LOGIN && (
+                        <>
+                            <Login closeDialog={handleClose} />
+
+                            <Box textAlign='center'>
+                                <Button color='primary' onClick={() => setMode(MODE.REGISTER)}>
+                                    Don't have an account? Create a new one here!
+                                </Button>
+                            </Box>
+                        </>
+                    )}
 
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Cancel
-                    </Button>
 
-                </DialogActions>
             </Dialog>
         </div>
     );

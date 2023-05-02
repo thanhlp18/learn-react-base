@@ -37,33 +37,23 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-RegisterForm.propTypes = {
+LoginForm.propTypes = {
     onSubmit: PropTypes.func
 };
 
-function RegisterForm(props) {
+function LoginForm(props) {
     const classes = useStyles()
 
     const schema = yup.object({
-        firstName: yup.string().required('Please enter your first name!'),
-        lastName: yup.string().required('Please enter your last name!'),
-        email: yup.string().required('Please enter your email!')
+        identifier: yup.string().required('Please enter your email!')
             .email('Please enter a valid email address!'),
         password: yup.string().required('Please enter your your password!')
-            .min(6, 'Please enter at least 6 charaters'),
-        confirmationPassword: yup.string().required('Please enter the confirmation password!')
-            .oneOf([yup.ref('password')], 'Please enter the same password!'),
-
-
     }).required();
 
     const form = useForm({
         defaultValues: {
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            confirmationPassword: '',
+            identifier: '',
+            password: ''
         },
         resolver: yupResolver(schema)
     })
@@ -77,7 +67,7 @@ function RegisterForm(props) {
         }
     }
 
-    const { isSubmitting, isSubmitted } = form.formState
+    const { isSubmitting } = form.formState
 
     return (
         <div className={classes.root}>
@@ -87,27 +77,18 @@ function RegisterForm(props) {
             </Avatar>
 
             <Typography className={classes.title} component='h3' variant='h5'>
-                Create a new account
+                Sign in
             </Typography>
 
             <form onSubmit={form.handleSubmit(handleSubmit)}>
-                <Grid container spacing={2}>
-                    <Grid className={classes.fixedSpacing} item xs={12} sm={6}>
-                        <InputField form={form} name='firstName' label='First name' />
-                    </Grid>
-                    <Grid className={classes.fixedSpacing} item xs={12} sm={6}>
-                        <InputField form={form} name='lastName' label='Last name' />
-                    </Grid>
-                </Grid>
-                <InputField form={form} name='email' label='Email' />
+                <InputField form={form} name='identifier' label='Email' />
                 <PasswordField form={form} name='password' label='Password' />
-                <PasswordField form={form} name='confirmationPassword' label='Confirmation password' />
                 <Button disabled={isSubmitting} size="large" type='submib' variant='contained' color='primary' className={classes.submit} fullWidth>
-                    Create a new account
+                    Sign in
                 </Button>
             </form>
         </div>
     );
 }
 
-export default RegisterForm;
+export default LoginForm;
