@@ -15,8 +15,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useState } from 'react';
 import Register from 'features/Auth/components/Register';
-import { Close } from '@material-ui/icons'
+import { AccountCircle, Close } from '@material-ui/icons'
 import Login from 'features/Auth/components/Login';
+import { useDispatch, useSelector } from 'react-redux';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { logout } from 'features/Auth/userSlice';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,8 +51,12 @@ const MODE = {
 }
 
 export default function ButtonAppBar() {
+    const dispatch = useDispatch()
+    const loggedInUser = useSelector(state => state.user.current);
+    const isLoggedIn = !!loggedInUser.id;
     const [open, setOpen] = useState(false);
     const [mode, setMode] = useState(MODE.LOGIN)
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -57,6 +65,23 @@ export default function ButtonAppBar() {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleCloseMenu = () => {
+        setAnchorEl(null)
+
+    }
+
+    const handleUserClick = (e) => {
+        setAnchorEl(e.currentTarget)
+    }
+
+
+    const handleLogoutClick = () => {
+        const action = logout()
+        dispatch(action)
+        handleCloseMenu()
+    }
+
     const classes = useStyles();
 
     return (
@@ -70,10 +95,35 @@ export default function ButtonAppBar() {
                     <NavLink className={classes.link} to='todos'><Button color="inherit">Todo</Button></NavLink>
                     <NavLink className={classes.link} to='albums'><Button color="inherit">Albums</Button></NavLink>
 
-
-                    <Button color="inherit" onClick={handleClickOpen}>Register</Button>
+                    {!isLoggedIn && (
+                        <Button color="inherit" onClick={handleClickOpen}>Login</Button>
+                    )}
+                    {isLoggedIn && (
+                        <IconButton color="inherit" onClick={handleUserClick}>
+                            <AccountCircle></AccountCircle>
+                        </IconButton>
+                    )}
                 </Toolbar>
             </AppBar>
+            <Menu
+                keepMounted
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleCloseMenu}
+
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                getContentAnchorEl={null}
+            >
+                <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
+                <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
+            </Menu>
 
             <Dialog disableEscapeKeyDown disableBackdropClick open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <IconButton className={classes.closeButton} onClick={handleClose}>
